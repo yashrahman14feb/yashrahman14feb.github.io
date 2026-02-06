@@ -669,7 +669,6 @@
 </head>
 <body>
     <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">☀️</button>
-    <button class="debug-toggle" onclick="toggleDebug()">🛠️ Debug</button>
     <div class="easter-egg-trigger" onclick="triggerEasterEgg()">🎁</div>
     <div class="stars" id="stars"></div>
     <div class="hearts-container" id="heartsContainer"></div>
@@ -698,7 +697,7 @@
         <div class="calendar-wrapper">
             <div class="calendar-header">
                 <h2>February 2026</h2>
-                <p>Click on each day to explore our love story</p>
+                <p>Click on each day to explore our love story hehe ❤</p>
             </div>
 
             <div class="weekdays">
@@ -715,7 +714,7 @@
         </div>
 
         <div class="love-note">
-            <p>Every day is a new chapter in our beautiful story. Each moment with you is a treasure I'll cherish forever. 💖</p>
+            <p>Every day is a new chapter in our beautiful story. Each moment with you is a treasure I'll cherish forever jaan. 💖</p>
             <div class="signature">With all my love</div>
         </div>
     </div>
@@ -723,40 +722,15 @@
     <div class="lock-modal" id="lockModal">
         <div class="lock-content">
             <div class="lock-icon">🔒</div>
-            <h3>Not Yet, Lokkhi!</h3>
+            <h3>Daran, Madam! ❤🤭</h3>
             <p id="lockMessage">This day hasn't unlocked yet! Be patient, my love.</p>
             <div class="unlock-date" id="unlockDate"></div>
-            <button class="close-modal" onclick="closeLockModal()">Okay, I'll Wait 💖</button>
+            <button class="close-modal" onclick="closeLockModal()">Ji Thik Ache 💖</button>
         </div>
     </div>
 
     <div class="compliment-popup" id="complimentPopup">
         <div class="compliment-text" id="complimentText"></div>
-    </div>
-
-    <div class="debug-panel" id="debugPanel">
-        <h3>🛠️ Debug Controls</h3>
-        <button class="debug-button" onclick="debugUnlockAll()">🔓 Unlock All Days</button>
-        <button class="debug-button" onclick="debugLockAll()">🔒 Lock All Days</button>
-        <button class="debug-button" onclick="debugResetProgress()">🔄 Reset Progress</button>
-        <button class="debug-button" onclick="debugShowCompliment()">💬 Show Compliment</button>
-        <button class="debug-button" onclick="debugTriggerConfetti()">🎉 Trigger Confetti</button>
-        <button class="debug-button" onclick="triggerEasterEgg()">🎁 Easter Egg</button>
-        <hr style="margin: 15px 0; opacity: 0.3;">
-        <label style="font-size: 0.9rem;">Jump to Day:</label>
-        <button class="debug-button" onclick="debugGoToDay(1)">Day 1 - Rose (7th)</button>
-        <button class="debug-button" onclick="debugGoToDay(2)">Day 2 - Propose (8th)</button>
-        <button class="debug-button" onclick="debugGoToDay(3)">Day 3 - Chocolate (9th)</button>
-        <button class="debug-button" onclick="debugGoToDay(4)">Day 4 - Teddy (10th)</button>
-        <button class="debug-button" onclick="debugGoToDay(5)">Day 5 - Promise (11th) ⭐</button>
-        <button class="debug-button" onclick="debugGoToDay(6)">Day 6 - Hug (12th)</button>
-        <button class="debug-button" onclick="debugGoToDay(7)">Day 7 - Kiss (13th)</button>
-        <button class="debug-button" onclick="debugGoToDay(8)">Day 8 - Valentine (14th)</button>
-        <hr style="margin: 15px 0; opacity: 0.3;">
-        <label style="font-size: 0.9rem;">Set Custom Date:</label>
-        <input type="date" id="debugDate" class="debug-input" />
-        <button class="debug-button" onclick="debugSetDate()">📅 Set Date</button>
-        <button class="debug-button" onclick="debugClearDate()">❌ Clear (Use Real Date)</button>
     </div>
 
     <script>
@@ -827,7 +801,7 @@
                 10: { page: 'day4.html', label: 'Teddy', emoji: '🧸' },
                 11: { page: 'day5.html', label: 'Promise', emoji: '🤝', special: true },
                 12: { page: 'day6.html', label: 'Hug', emoji: '🫂' },
-                13: { page: 'day7.html', label: 'Kiss', emoji: '💋' },
+                13: { page: 'day7.html', label: 'Kiss', emoji: '😳' },
                 14: { page: 'day8.html', label: 'Valentine', emoji: '💖' }
             };
 
@@ -880,10 +854,10 @@
             const dateDisplay = document.getElementById('unlockDate');
             
             const messages = [
-                "Patience, my love! Good things come to those who wait 💕",
+                "Patienceeeee, my love! Good things take time 💕",
                 "Not yet, jaan! Let's take this one day at a time 🌹",
                 "Hold on, shona! The best is yet to come ✨",
-                "Soon, pakhi! Every moment brings us closer 💖",
+                "Soon, pakhi! 💖",
                 "Almost there, lokkhi! I can't wait to share this with you 💫"
             ];
             
@@ -1062,56 +1036,6 @@
         const confettiStyle = document.createElement('style');
         confettiStyle.innerHTML = '@keyframes confettiFall { to { transform: translateY(100vh) rotate(720deg); opacity: 0; } }';
         document.head.appendChild(confettiStyle);
-
-        function toggleDebug() {
-            document.getElementById('debugPanel').classList.toggle('active');
-        }
-
-        function debugGoToDay(dayNum) {
-            const pages = ['day1.html', 'day2.html', 'day3.html', 'day4.html', 'day5.html', 'day6.html', 'day7.html', 'day8.html'];
-            window.location.href = pages[dayNum - 1];
-        }
-
-        function debugUnlockAll() {
-            localStorage.setItem('debugUnlockAll', 'true');
-            alert('All days unlocked! Refresh the page.');
-        }
-
-        function debugLockAll() {
-            localStorage.removeItem('debugUnlockAll');
-            alert('All days locked! Refresh the page.');
-        }
-
-        function debugResetProgress() {
-            for (let i = 7; i <= 14; i++) localStorage.removeItem(`day${i}Visited`);
-            updateProgressTracker();
-            alert('Progress reset!');
-        }
-
-        function debugShowCompliment() {
-            showRandomCompliment();
-        }
-
-        function debugTriggerConfetti() {
-            triggerConfetti();
-        }
-
-        function debugSetDate() {
-            const dateInput = document.getElementById('debugDate');
-            if (dateInput.value) {
-                localStorage.setItem('debugDate', dateInput.value);
-                alert('Date set! Reloading...');
-                location.reload();
-            } else {
-                alert('Please select a date first');
-            }
-        }
-
-        function debugClearDate() {
-            localStorage.removeItem('debugDate');
-            alert('Using real date now! Reloading...');
-            location.reload();
-        }
 
         generateCalendar();
         updateProgressTracker();
