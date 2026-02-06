@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 6 - Hug Day 🤗</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Quicksand:wght@400;600;700&family=Satisfy&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --warm-orange: #ff9966;
+            --soft-peach: #ffcc99;
+            --cream: #fff8f0;
+            --deep-orange: #ff6633;
+            --cozy-brown: #8b6f47;
+        }
+
+
+        /* Night mode styles */
+        body.night-mode {
+            --rose: #ff4d94;
+            --deep-rose: #ff1a75;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a3e 50%, #2d1b4e 100%) !important;
+        }
+
+        body.night-mode .content-card {
+            background: rgba(26, 26, 62, 0.95);
+            box-shadow: 0 20px 60px rgba(255, 77, 148, 0.3);
+        }
+
+        body.night-mode h1, body.night-mode .day-title, body.night-mode .message p {
+            color: #ffd700 !important;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        body.night-mode .quote {
+            color: #ff94c7 !important;
+            border-left-color: #ff4d94;
+            background: rgba(255, 77, 148, 0.1);
+        }
+
+        body.night-mode .stars {
+            display: block;
+        }
+
+        .stars {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 1s ease-out 3.8s both;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(20deg);
+        }
+
+        /* Hug Easter Egg */
+        .hug-easter-egg {
+            position: fixed;
+            bottom: 80px;
+            left: 30px;
+            font-size: 2.5rem;
+            cursor: pointer;
+            z-index: 200;
+            animation: hugPulse 2s ease-in-out infinite, fadeIn 1s ease-out 4.5s both;
+        }
+
+        @keyframes hugPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .hug-easter-egg:hover {
+            animation: hugPulse 0.5s ease-in-out infinite, bounceScale 0.6s ease-in-out;
+        }
+
+        body.night-mode .theme-toggle {
+            background: rgba(26, 26, 62, 0.9);
+        }
+
+        /* Easter Egg */
+        .easter-egg-trigger {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            font-size: 3rem;
+            cursor: pointer;
+            z-index: 101;
+            animation: easterEggFloat 3s ease-in-out infinite, fadeIn 1s ease-out 4.5s both;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+        }
+
+        @keyframes easterEggFloat {
+            0%, 100% { transform: translateY(0px) rotate(-5deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .easter-egg-trigger:hover {
+            animation: easterEggFloat 0.5s ease-in-out infinite, bounceScale 0.6s ease-in-out;
+        }
+
+        @keyframes bounceScale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fff8f0 0%, #ffead4 50%, #ffd4a8 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Curtain Loader */
+        .curtain-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            overflow: hidden;
+        }
+
+        /* Curtain Rod */
+        .curtain-rod {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: linear-gradient(180deg, #E07A5F 0%, #C25A3F 100%);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 15;
+        }
+
+        .curtain-rod::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: radial-gradient(ellipse, #FFB347 0%, #FF9933 100%);
+            transform: translateY(-50%);
+            box-shadow: 0 2px 10px rgba(255, 179, 71, 0.5);
+        }
+
+        .curtain-left, .curtain-right {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff9966 0%, #ff6633 100%);
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.2);
+            z-index: 5;
+            background-image: 
+                repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(0,0,0,0.05) 40px, rgba(0,0,0,0.05) 80px);
+        }
+
+        .curtain-left {
+            left: 0;
+            transform-origin: left;
+            animation: curtainOpen 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.5s forwards;
+        }
+
+        .curtain-right {
+            right: 0;
+            transform-origin: right;
+            animation: curtainOpen 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.5s forwards;
+        }
+
+        @keyframes curtainOpen {
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        /* Hug decorations */
+        .curtain-hugs {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 8;
+        }
+
+        .curtain-hug {
+            position: absolute;
+            font-size: 3rem;
+            animation: hugFloat 4s ease-in-out infinite;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+        }
+
+        @keyframes hugFloat {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(5deg);
+            }
+        }
+
+        .curtain-loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease 2.5s;
+        }
+
+        .curtain-loader.hidden {
+            pointer-events: none;
+        }
+
+        .curtain-loader.hidden .curtain-left {
+            transform: translateX(-100%);
+        }
+
+        .curtain-loader.hidden .curtain-right {
+            transform: translateX(100%);
+        }
+
+        .curtain-loader.hidden .curtain-hugs,
+        .curtain-loader.hidden .curtain-rod,
+        .curtain-loader.hidden .loader-content {
+            opacity: 0;
+        }
+
+        .curtain-loader.hidden .loader-content {
+            opacity: 0;
+        }
+
+        .loader-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
+            transition: opacity 0.6s ease-out;
+        }
+
+        .loader-emoji {
+            font-size: clamp(5rem, 20vw, 8rem);
+            animation: hugPulse 1.5s ease-in-out infinite;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        @keyframes hugPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .loader-text {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            color: white;
+            font-weight: 600;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Main content - hidden until loader finishes */
+        .main-content {
+            opacity: 0;
+            transition: opacity 0.8s ease-out;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* Rest of styles continue... */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .day-badge {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .day-number {
+            font-size: 1rem;
+            color: var(--deep-orange);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .day-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 11vw, 4.5rem);
+            color: var(--cozy-brown);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .hug-emoji {
+            animation: wiggle 3s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        /* Hug Card */
+        .hug-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 50px 40px;
+            box-shadow: 
+                0 20px 60px rgba(255, 102, 51, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+            margin: 20px 0;
+            animation: slideInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .embrace-illustration {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .embrace-emoji {
+            font-size: clamp(10rem, 30vw, 14rem);
+            display: inline-block;
+            filter: drop-shadow(0 10px 20px rgba(255, 102, 51, 0.2));
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .hug-message {
+            background: rgba(255, 153, 102, 0.1);
+            border-radius: 15px;
+            padding: 30px 25px;
+            margin: 25px 0;
+            border-left: 4px solid var(--warm-orange);
+            text-align: center;
+        }
+
+        .hug-message p {
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            line-height: 1.8;
+            color: var(--cozy-brown);
+            margin-bottom: 20px;
+        }
+
+        .placeholder {
+            background: rgba(255, 102, 51, 0.05);
+            border-left: 3px solid var(--deep-orange);
+            padding: 20px;
+            margin: 25px 0;
+            font-style: italic;
+            color: #666;
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* Virtual Hug Button */
+        .hug-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--warm-orange) 0%, var(--deep-orange) 100%);
+            color: white;
+            padding: 25px 60px;
+            border-radius: 50px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 102, 51, 0.4);
+            transition: all 0.4s ease;
+            font-family: 'Quicksand', sans-serif;
+            position: relative;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+
+        .hug-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .hug-button:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .hug-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 102, 51, 0.5);
+        }
+
+        .hug-button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hug-counter {
+            text-align: center;
+            margin-top: 20px;
+            font-family: 'Satisfy', cursive;
+            font-size: 1.2rem;
+            color: var(--deep-orange);
+        }
+
+        /* Warmth Message */
+        .warmth-message {
+            background: linear-gradient(135deg, rgba(255, 153, 102, 0.15) 0%, rgba(255, 102, 51, 0.1) 100%);
+            border-radius: 20px;
+            padding: 40px 35px;
+            margin: 35px 0;
+            text-align: center;
+        }
+
+        .warmth-message p {
+            font-size: clamp(1.2rem, 4vw, 1.6rem);
+            line-height: 1.9;
+            color: var(--cozy-brown);
+            margin-bottom: 20px;
+        }
+
+        .warmth-message .highlight {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2em;
+            color: var(--deep-orange);
+            font-weight: 600;
+        }
+
+        .continue-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--warm-orange) 0%, var(--deep-orange) 100%);
+            color: white;
+            padding: 18px 45px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            margin-top: 25px;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(255, 102, 51, 0.3);
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 102, 51, 0.4);
+        }
+
+        /* Back button */
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--warm-orange);
+            color: var(--cozy-brown);
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-button:hover {
+            background: var(--warm-orange);
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        /* Music controls */
+        .music-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+
+        .music-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--warm-orange) 0%, var(--deep-orange) 100%);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 102, 51, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .music-toggle.playing {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @media (max-width: 480px) {
+            .hug-card {
+                padding: 40px 25px;
+            }
+
+            .hug-button {
+                padding: 20px 45px;
+                font-size: 1.2rem;
+            }
+
+            .music-controls {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .music-toggle {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .back-button {
+                top: 20px;
+                left: 20px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Curtain Loader -->
+    <div class="curtain-loader" id="curtainLoader">
+        <div class="curtain-rod"></div>
+        <div class="curtain-left"></div>
+        <div class="curtain-right"></div>
+        <div class="curtain-hugs">
+            <div class="curtain-hug" style="left: 15%; top: 20%; animation-delay: 0s;">🤗</div>
+            <div class="curtain-hug" style="left: 25%; top: 40%; animation-delay: 0.5s;">🤗</div>
+            <div class="curtain-hug" style="left: 20%; top: 60%; animation-delay: 1s;">🤗</div>
+            <div class="curtain-hug" style="left: 18%; top: 75%; animation-delay: 1.5s;">🤗</div>
+            <div class="curtain-hug" style="left: 12%; top: 85%; animation-delay: 2s;">🤗</div>
+            <div class="curtain-hug" style="right: 15%; top: 25%; animation-delay: 0.3s;">🤗</div>
+            <div class="curtain-hug" style="right: 25%; top: 45%; animation-delay: 0.8s;">🤗</div>
+            <div class="curtain-hug" style="right: 20%; top: 65%; animation-delay: 1.3s;">🤗</div>
+            <div class="curtain-hug" style="right: 18%; top: 78%; animation-delay: 1.8s;">🤗</div>
+            <div class="curtain-hug" style="right: 12%; top: 88%; animation-delay: 2.3s;">🤗</div>
+        </div>
+        <div class="loader-content">
+            <span class="loader-emoji">🤗</span>
+            <div class="loader-text">Preparing warm hugs for you...</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="container">
+            <a href="index.html" class="back-button">← Back to Calendar</a>
+
+            <div class="day-badge">
+                <div class="day-number">Day 6 of 8 • 12th February</div>
+                <h1 class="day-title">
+                    <span class="hug-emoji">🤗</span>
+                    Hug Day
+                </h1>
+            </div>
+
+            <div class="hug-card">
+                <div class="embrace-illustration">
+                    <div class="embrace-emoji">🫂</div>
+                </div>
+
+                <div class="hug-message">
+                    <p>
+                        Sometimes words aren't enough.<br>
+                        Sometimes all you need is a warm embrace.
+                    </p>
+                    <p>
+                        Today, I'm wrapping my arms around you<br>
+                        through time and space, through this screen,<br>
+                        sending you all the warmth and comfort you deserve.
+                    </p>
+                </div>
+
+                <div class="placeholder">
+                    [YOUR HUG DAY MESSAGE GOES HERE]
+                    <br><br>
+                    Tell Tory about the comfort of your hugs. How they make her feel safe. How you'll always be there to hold her. Make her feel wrapped in warmth and love.
+                </div>
+
+                <div style="text-align: center;">
+                    <button class="hug-button" id="hugButton">
+                        <span>Send Virtual Hug 🤗</span>
+                    </button>
+                    <div class="hug-counter" id="hugCounter">Hugs sent: 0</div>
+                </div>
+            </div>
+
+            <div class="warmth-message">
+                <p>
+                    In your arms, I find peace.<br>
+                    In my arms, you find home.
+                </p>
+                <p class="highlight">
+                    No distance can ever break<br>
+                    the embrace of two souls in love.
+                </p>
+                <p style="font-size: 1.9rem; color: var(--deep-orange); margin-top: 30px;">
+                    My dearest Tory,<br>
+                    You're forever in my arms, lokkhi meye. 🤗💕
+                </p>
+
+                <a href="day7.html" class="continue-btn" id="continueBtn">Continue to Tomorrow →</a>
+            </div>
+        </div>
+
+        <!-- Music controls -->
+        <div class="music-controls">
+            <button class="music-toggle" id="musicToggle" onclick="toggleMusic()">
+                🔇
+            </button>
+        </div>
+
+        <!-- Hidden audio element -->
+        <audio id="bgMusic" loop>
+            <source src="music/romantic-instrumental.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <script>
+        // Mark day as visited (Feb 12 = day 12 in our system)
+        localStorage.setItem('day12Visited', 'true');
+
+        // Curtain Loader
+        window.addEventListener('load', () => {
+            const curtainLoader = document.getElementById('curtainLoader');
+            const mainContent = document.getElementById('mainContent');
+            
+            // After loader shows, start curtain reveal
+            setTimeout(() => {
+                curtainLoader.classList.add('hidden');
+                mainContent.classList.add('visible');
+                
+                // After curtain animation completes (2s transition + 0.5s buffer), completely remove it
+                setTimeout(() => {
+                    curtainLoader.classList.add('completely-hidden');
+                }, 2500);
+            }, 2500); // Show loader animation first
+        });
+
+        // Hug Button
+        let hugCount = 0;
+        const hugButton = document.getElementById('hugButton');
+        const hugCounter = document.getElementById('hugCounter');
+
+        hugButton.addEventListener('click', function() {
+            hugCount++;
+            hugCounter.textContent = `Hugs sent: ${hugCount}`;
+            
+            // Vibrate if supported
+            if ('vibrate' in navigator) {
+                navigator.vibrate([200, 100, 200, 100, 200]);
+            }
+            
+            // Create floating hearts
+            createFloatingHearts();
+            
+            // Button animation
+            this.style.animation = 'hugPulse 0.6s ease-out';
+            setTimeout(() => {
+                this.style.animation = '';
+            }, 600);
+        });
+
+        function createFloatingHearts() {
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = ['🤗', '💕', '🫂', '💖'][Math.floor(Math.random() * 4)];
+                heart.style.position = 'fixed';
+                heart.style.left = (Math.random() * 80 + 10) + '%';
+                heart.style.top = '60%';
+                heart.style.fontSize = (Math.random() * 25 + 20) + 'px';
+                heart.style.opacity = '0';
+                heart.style.zIndex = '99999';
+                heart.style.pointerEvents = 'none';
+                heart.style.animation = `floatHeart ${Math.random() * 2 + 2}s ease-out forwards`;
+                heart.style.animationDelay = (i * 0.1) + 's';
+                
+                document.body.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 4000);
+            }
+        }
+
+        // Add float heart animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes floatHeart {
+                0% {
+                    opacity: 0;
+                    transform: translateY(0) scale(0.5) rotate(0deg);
+                }
+                20% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateY(-200px) scale(1.2) rotate(360deg);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Music control
+        const music = document.getElementById('bgMusic');
+        const toggle = document.getElementById('musicToggle');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                toggle.textContent = '🔇';
+                toggle.classList.remove('playing');
+            } else {
+                music.play();
+                music.volume = 0.15;
+                toggle.textContent = '🔊';
+                toggle.classList.add('playing');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Fix continue button - prevent navigation to locked days
+        const continueBtn = document.getElementById('continueBtn');
+        continueBtn.addEventListener('click', function(e) {
+            const nextDayDate = new Date(2026, 1, 13); // Feb 13
+            const debugDate = localStorage.getItem('debugDate');
+            const currentDate = debugDate ? new Date(debugDate) : new Date();
+            const debugUnlock = localStorage.getItem('debugUnlockAll') === 'true';
+            
+            if (currentDate < nextDayDate && !debugUnlock) {
+                e.preventDefault();
+                alert('Day 7 unlocks on February 13, 2026. Patience, lokkhi! 💕');
+            }
+        });
+
+        // ========================================
+        // THEME TOGGLE & NIGHT MODE
+        // ========================================
+        // Hug Easter Egg
+        function triggerHugEasterEgg() {
+            const hugMsg = document.createElement('div');
+            hugMsg.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 100%);
+                color: #c71585;
+                padding: 30px 40px;
+                border-radius: 20px;
+                font-size: 1.5rem;
+                z-index: 10000;
+                box-shadow: 0 10px 40px rgba(255, 182, 193, 0.6);
+                animation: scaleIn 0.5s ease-out;
+                text-align: center;
+                font-family: 'Playfair Display', serif;
+            `;
+            hugMsg.innerHTML = '🤗 Sending you the warmest hug! 🤗<br><small style="font-size: 0.9rem; margin-top: 10px; display: block;">Wrapped in my arms, always! 💕</small>';
+            document.body.appendChild(hugMsg);
+            
+            createConfetti();
+            
+            setTimeout(() => hugMsg.remove(), 3000);
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('night-mode');
+            const themeToggle = document.getElementById('themeToggle');
+            const isNight = document.body.classList.contains('night-mode');
+            themeToggle.textContent = isNight ? '🌙' : '☀️';
+            localStorage.setItem('theme', isNight ? 'night' : 'day');
+            if (isNight) createStars();
+        }
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'night') {
+            document.body.classList.add('night-mode');
+            document.getElementById('themeToggle').textContent = '🌙';
+            createStars();
+        }
+
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            if (!starsContainer) return;
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // ========================================
+        // EASTER EGG
+        // ========================================
+        function triggerEasterEgg() {
+            const emojis = ['🫂', '🤗', '💕', '❤️', '💖'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.style.position = 'fixed';
+                    emoji.style.left = Math.random() * 100 + 'vw';
+                    emoji.style.top = '-50px';
+                    emoji.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                    emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.zIndex = '99999';
+                    emoji.style.pointerEvents = 'none';
+                    emoji.style.animation = `confettiFall ${Math.random() * 3 + 2}s ease-out forwards`;
+                    document.body.appendChild(emoji);
+                    setTimeout(() => emoji.remove(), 5000);
+                }, i * 30);
+            }
+
+            const msg = document.createElement('div');
+            msg.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, var(--rose), var(--deep-rose));
+                color: white;
+                padding: 30px 40px;
+                border-radius: 20px;
+                font-size: 1.5rem;
+                text-align: center;
+                z-index: 100000;
+                box-shadow: 0 20px 60px rgba(255, 107, 157, 0.5);
+                animation: scaleIn 0.5s ease-out;
+            `;
+            msg.innerHTML = '🫂 A warm hug to hold you close, forever! 💕';
+            document.body.appendChild(msg);
+            setTimeout(() => {
+                msg.style.animation = 'fadeOut 0.5s ease-out';
+                setTimeout(() => msg.remove(), 500);
+            }, 3000);
+        }
+
+        const confettiStyle = document.createElement('style');
+        confettiStyle.innerHTML = `
+            @keyframes confettiFall {
+                to {
+                    transform: translateY(100vh) rotate(720deg);
+                    opacity: 0;
+                }
+            }
+            @keyframes fadeOut {
+                to {
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(0.8);
+                }
+            }
+        `;
+        document.head.appendChild(confettiStyle);
+
+        // ========================================
+        // FIX CONTINUE TOMORROW BUTTON
+        // ========================================
+        const continueBtn = document.querySelector('a[href="day7.html"]');
+        if (continueBtn) {
+            const nextDayDate = new Date(2026, 1, 13);
+            const debugDate = localStorage.getItem('debugDate');
+            const currentDate = debugDate ? new Date(debugDate + 'T00:00:00') : new Date();
+            const debugUnlock = localStorage.getItem('debugUnlockAll') === 'true';
+            
+            if (currentDate < nextDayDate && !debugUnlock) {
+                continueBtn.style.display = 'none';
+            }
+        }
+    </script>
+
+    <!-- Hug Easter Egg -->
+    <div class="hug-easter-egg" onclick="triggerHugEasterEgg()" title="Click for a hug!">
+        🤗💞
+    </div>
+
+    <!-- Stars for night mode -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle" title="Toggle Day/Night Mode">
+        ☀️
+    </button>
+
+    <!-- Easter Egg -->
+    <div class="easter-egg-trigger" onclick="triggerEasterEgg()" title="Click for a hug!">
+        🤗💕
+    </div>
+
+</body>
+</html>
