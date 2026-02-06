@@ -127,6 +127,16 @@
             box-sizing: border-box;
         }
 
+        
+        /* Custom Cursor */
+        body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="24" font-size="24">🌹</text></svg>') 16 16, auto;
+        }
+
+        a, button, .cta-button, .music-toggle, .theme-toggle, [onclick] {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><text y="30" font-size="30">🌹</text></svg>') 20 20, pointer;
+        }
+
         body {
             font-family: 'Cormorant Garamond', serif;
             background: linear-gradient(135deg, #ffe0e8 0%, #ffd0dc 50%, #ffc0d0 100%);
@@ -170,6 +180,7 @@
         .curtain-right {
             right: 0;
             transform-origin: right;
+            transition: transform 2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             transition: transform 2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
@@ -275,10 +286,6 @@
         .curtain-loader.hidden .curtain-rod {
             opacity: 0;
             transition: opacity 0.8s ease-out 1.5s;
-        }
-        
-        .curtain-loader.completely-hidden {
-            display: none !important;
         }
 
         .loader-content {
@@ -759,42 +766,6 @@
             <div class="curtain-rose">🌹</div>
             <div class="curtain-rose">🌹</div>
         </div>
-        <div class="loader-content">
-            <div class="loader-rose">
-                <svg class="loader-rose-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                    <!-- More realistic rose with layered petals -->
-                    <!-- Stem -->
-                    <path d="M100 120 Q98 140 100 160 L100 185" stroke="#2d5016" stroke-width="5" fill="none" stroke-linecap="round"/>
-                    
-                    <!-- Leaves -->
-                    <path class="leaf leaf-1" d="M100 145 Q85 145 78 155 Q85 162 100 158" fill="#4a7c29" opacity="0"/>
-                    <path class="leaf leaf-2" d="M100 160 Q115 160 122 170 Q115 177 100 173" fill="#4a7c29" opacity="0"/>
-                    
-                    <!-- Outer petals layer -->
-                    <ellipse class="petal petal-outer petal-1" cx="100" cy="85" rx="28" ry="40" fill="#ff6b9d" transform="rotate(0 100 85)"/>
-                    <ellipse class="petal petal-outer petal-2" cx="100" cy="85" rx="28" ry="40" fill="#ff7ba8" transform="rotate(72 100 85)"/>
-                    <ellipse class="petal petal-outer petal-3" cx="100" cy="85" rx="28" ry="40" fill="#ff6b9d" transform="rotate(144 100 85)"/>
-                    <ellipse class="petal petal-outer petal-4" cx="100" cy="85" rx="28" ry="40" fill="#ff7ba8" transform="rotate(216 100 85)"/>
-                    <ellipse class="petal petal-outer petal-5" cx="100" cy="85" rx="28" ry="40" fill="#ff6b9d" transform="rotate(288 100 85)"/>
-                    
-                    <!-- Middle petals layer -->
-                    <ellipse class="petal petal-middle petal-6" cx="100" cy="82" rx="22" ry="32" fill="#ff4d7a" transform="rotate(36 100 82)"/>
-                    <ellipse class="petal petal-middle petal-7" cx="100" cy="82" rx="22" ry="32" fill="#ff5a89" transform="rotate(108 100 82)"/>
-                    <ellipse class="petal petal-middle petal-8" cx="100" cy="82" rx="22" ry="32" fill="#ff4d7a" transform="rotate(180 100 82)"/>
-                    <ellipse class="petal petal-middle petal-9" cx="100" cy="82" rx="22" ry="32" fill="#ff5a89" transform="rotate(252 100 82)"/>
-                    <ellipse class="petal petal-middle petal-10" cx="100" cy="82" rx="22" ry="32" fill="#ff4d7a" transform="rotate(324 100 82)"/>
-                    
-                    <!-- Inner petals layer -->
-                    <ellipse class="petal petal-inner petal-11" cx="100" cy="80" rx="16" ry="24" fill="#ff1a5a" transform="rotate(0 100 80)"/>
-                    <ellipse class="petal petal-inner petal-12" cx="100" cy="80" rx="16" ry="24" fill="#ff2d6b" transform="rotate(120 100 80)"/>
-                    <ellipse class="petal petal-inner petal-13" cx="100" cy="80" rx="16" ry="24" fill="#ff1a5a" transform="rotate(240 100 80)"/>
-                    
-                    <!-- Center -->
-                    <circle class="center" cx="100" cy="78" r="12" fill="#cc0033" opacity="0"/>
-                    <circle class="center-detail" cx="100" cy="78" r="8" fill="#990028" opacity="0"/>
-                </svg>
-            </div>
-            <div class="loader-text">Our love story begins with a rose...</div>
         </div>
     </div>
 
@@ -830,26 +801,30 @@
         <div class="content-card">
             <div class="message">
                 <p>
-                    Our story didn't start with a rose,<br>
-                    <span class="highlight">but so what?</span>
+                    Our Story Didn't Start With A Rose,<br>
+                    <span class="highlight">But So What?</span>
                 </p>
                 <p>
-                    It started with something far more precious —<br>
-                    <span class="highlight">love on the first day.</span>
+                    It Started With Something Much More Beautiful —<br>
+                    <span class="highlight">Our Love On The First Day We Met.</span>
                 </p>
 
                 <div class="quote">
-                    "A rose may symbolize beauty and romance, but what we have goes deeper than any flower could express. Our love bloomed naturally, authentically, and continues to grow stronger every single day."
+                    "A rose may symbolize beauty and romance, but amader ja ase eitaa kono ful dara konodin o bujhano Shombhob nahh!! Our love is natural hehe ekdom golap er motoi pobitro o , and gach er motoi our love will continue to grow stronger every single day. ❤"
                 </div>
 
                 <p>
-                    Every petal that falls represents a moment we've shared,<br>
-                    a memory we've made, a smile you've given me.
+                    PIchone dekhen ful er papri portese eigula ek ek ta hocche amader eksathe katano protita muhurter protik (hehe matro google koira ber korsi ei word onek koste ekbar ektu extra i love you boilo please👉🏻👈🏻❤).<br>
+                    ar golap deuyar bishoy ta ma'am chinta koiren nah ekta golap kine anbo ne apnr jonno abr bahire gele kacha kachi basha hoile toh ajkei diye ashtam <br>
+                    onek gula toh deuya o jabe nah golap ful dekhlei toh bipod allah re <br>
+                    1-2 ta dibo ne allah bhorosha etotuk e ar ki bujhbe allah go bhoy o toh lage ekta diteo <br>
+                    lal na oije pinking gula 🤔<br>
+                    duitai dibo ne ?<br>
                 </p>
 
                 <p style="font-size: 1.5rem; color: var(--deep-rose); margin-top: 30px;">
                     To my dearest Tory,<br>
-                    amar jibon er bagan e apni e amar shobche shundor golap ta 
+                    amar jibon er bagan e apni amar shobche shundor golap 🌹❤
                 </p>
 
                 <a href="day2.html" class="cta-button">
@@ -876,21 +851,21 @@
         // Mark day as visited (Feb 7 = day 7)
         localStorage.setItem('day7Visited', 'true');
         
-        // Curtain Loader
+                // Curtain animation
         window.addEventListener('load', () => {
             const curtainLoader = document.getElementById('curtainLoader');
             const mainContent = document.getElementById('mainContent');
             
-            // After 3 seconds, start curtain reveal
+            // Open curtains after 1 second
             setTimeout(() => {
-                curtainLoader.classList.add('hidden');
-                mainContent.classList.add('visible');
+                if (curtainLoader) curtainLoader.classList.add('hidden');
+                if (mainContent) mainContent.classList.add('visible');
                 
-                // After curtain animation completes (2s transition + 0.5s buffer), completely remove it
+                // Completely remove curtain after animation
                 setTimeout(() => {
-                    curtainLoader.classList.add('completely-hidden');
+                    if (curtainLoader) curtainLoader.style.display = 'none';
                 }, 2500);
-            }, 3000); // Show rose bloom for 3 seconds first
+            }, 1000);
         });
 
         // Create floating petals
@@ -1124,6 +1099,32 @@
                 continueBtn2.style.display = 'none';
             }
         }
+    
+        // ========================================
+        // CONFETTI FUNCTION
+        // ========================================
+        function createConfetti() {
+            const colors = ['#ff6b9d', '#ffd700', '#ff1493', '#00ffff', '#ff69b4', '#ffb6c1'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.cssText = `
+                    position: fixed;
+                    width: 10px;
+                    height: 10px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    left: ${Math.random() * 100}vw;
+                    top: -10px;
+                    opacity: 1;
+                    transform: rotate(${Math.random() * 360}deg);
+                    animation: confettiFall ${2 + Math.random() * 3}s linear forwards;
+                    pointer-events: none;
+                    z-index: 99999;
+                `;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
     </script>
 </body>
 </html>
