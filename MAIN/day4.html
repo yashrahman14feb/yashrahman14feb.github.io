@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 4 - Teddy Day 🧸</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Quicksand:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --soft-beige: #f5ebe0;
+            --cream: #fffcf2;
+            --warm-brown: #a67c52;
+            --deep-brown: #6c4f3d;
+            --plush-pink: #fadadd;
+        }
+
+
+        /* Night mode styles */
+        body.night-mode {
+            --rose: #ff4d94;
+            --deep-rose: #ff1a75;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a3e 50%, #2d1b4e 100%) !important;
+        }
+
+        body.night-mode .content-card {
+            background: rgba(26, 26, 62, 0.95);
+            box-shadow: 0 20px 60px rgba(255, 77, 148, 0.3);
+        }
+
+        body.night-mode h1, body.night-mode .day-title, body.night-mode .message p {
+            color: #ffd700 !important;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        body.night-mode .quote {
+            color: #ff94c7 !important;
+            border-left-color: #ff4d94;
+            background: rgba(255, 77, 148, 0.1);
+        }
+
+        body.night-mode .stars {
+            display: block;
+        }
+
+        .stars {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 1s ease-out 3.8s both;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(20deg);
+        }
+
+        /* Sewing Easter Egg */
+        .sewing-easter-egg {
+            position: fixed;
+            bottom: 80px;
+            left: 30px;
+            font-size: 2.5rem;
+            cursor: pointer;
+            z-index: 200;
+            animation: sewingWork 2s ease-in-out infinite, fadeIn 1s ease-out 4.5s both;
+        }
+
+        @keyframes sewingWork {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .sewing-easter-egg:hover {
+            animation: sewingWork 0.5s ease-in-out infinite, bounceScale 0.6s ease-in-out;
+        }
+
+        body.night-mode .theme-toggle {
+            background: rgba(26, 26, 62, 0.9);
+        }
+
+        /* Easter Egg */
+        .easter-egg-trigger {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            font-size: 3rem;
+            cursor: pointer;
+            z-index: 101;
+            animation: easterEggFloat 3s ease-in-out infinite, fadeIn 1s ease-out 4.5s both;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+        }
+
+        @keyframes easterEggFloat {
+            0%, 100% { transform: translateY(0px) rotate(-5deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .easter-egg-trigger:hover {
+            animation: easterEggFloat 0.5s ease-in-out infinite, bounceScale 0.6s ease-in-out;
+        }
+
+        @keyframes bounceScale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* CSS Art Teddy Holding Paper */
+        .teddy-holder {
+            position: relative;
+            width: 400px;
+            height: 450px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .paper-sign {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 160px;
+            background: #fff8e7;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 5;
+            border: 3px solid #d4af37;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: paperFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes paperFloat {
+            0%, 100% { transform: translateX(-50%) translateY(0px) rotate(-2deg); }
+            50% { transform: translateX(-50%) translateY(-5px) rotate(2deg); }
+        }
+
+        .paper-content {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.4rem;
+            text-align: center;
+            color: #6c4f3d;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .teddy-bear-css {
+            position: relative;
+            width: 200px;
+            height: 280px;
+            margin-top: 80px;
+        }
+
+        /* Teddy Head */
+        .teddy-head {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: #a67c52;
+            border-radius: 50%;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+
+        .teddy-ear {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #a67c52;
+            border-radius: 50%;
+            border: 3px solid #8b5a3c;
+        }
+
+        .left-ear {
+            top: -10px;
+            left: -15px;
+        }
+
+        .right-ear {
+            top: -10px;
+            right: -15px;
+        }
+
+        .teddy-face {
+            position: absolute;
+            width: 80px;
+            height: 70px;
+            background: #d4a76a;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -30%);
+            z-index: 1;
+        }
+
+        .teddy-eye {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #2c1810;
+            border-radius: 50%;
+            top: 20px;
+        }
+
+        .left-eye {
+            left: 18px;
+        }
+
+        .right-eye {
+            right: 18px;
+        }
+
+        .teddy-nose {
+            position: absolute;
+            width: 18px;
+            height: 14px;
+            background: #2c1810;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            top: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .teddy-mouth {
+            position: absolute;
+            width: 30px;
+            height: 15px;
+            border: 2px solid #2c1810;
+            border-top: none;
+            border-radius: 0 0 50% 50%;
+            top: 48px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Teddy Body */
+        .teddy-body {
+            position: absolute;
+            width: 140px;
+            height: 160px;
+            background: #a67c52;
+            border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .teddy-belly {
+            position: absolute;
+            width: 90px;
+            height: 100px;
+            background: #d4a76a;
+            border-radius: 50%;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .teddy-arm {
+            position: absolute;
+            width: 50px;
+            height: 80px;
+            background: #a67c52;
+            border-radius: 40px;
+            top: 20px;
+        }
+
+        .left-arm {
+            left: -30px;
+            transform: rotate(-25deg);
+        }
+
+        .right-arm {
+            right: -30px;
+            transform: rotate(25deg);
+        }
+
+        .teddy-leg {
+            position: absolute;
+            width: 45px;
+            height: 70px;
+            background: #a67c52;
+            border-radius: 30px 30px 10px 10px;
+            bottom: -30px;
+        }
+
+        .left-leg {
+            left: 20px;
+        }
+
+        .right-leg {
+            right: 20px;
+        }
+
+        .teddy-foot {
+            position: absolute;
+            width: 60px;
+            height: 30px;
+            background: #8b5a3c;
+            border-radius: 50%;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .cookie {
+            position: absolute;
+            font-size: 2.5rem;
+            bottom: 120px;
+            right: 10px;
+            animation: cookieBounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+
+        @keyframes cookieBounce {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(15deg); }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fffcf2 0%, #f5ebe0 50%, #eddcd2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Curtain Loader */
+        .curtain-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            overflow: hidden;
+        }
+
+        /* Curtain Rod */
+        .curtain-rod {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: linear-gradient(180deg, #D4A574 0%, #B8956A 100%);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 15;
+        }
+
+        .curtain-rod::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: radial-gradient(ellipse, #F5DEB3 0%, #DEB887 100%);
+            transform: translateY(-50%);
+            box-shadow: 0 2px 10px rgba(245, 222, 179, 0.4);
+        }
+
+        .curtain-left, .curtain-right {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #a67c52 0%, #8b6f47 100%);
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.2);
+            z-index: 5;
+            background-image: 
+                repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(0,0,0,0.05) 40px, rgba(0,0,0,0.05) 80px);
+        }
+
+        .curtain-left {
+            left: 0;
+            transform-origin: left;
+            animation: curtainOpen 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.5s forwards;
+        }
+
+        .curtain-right {
+            right: 0;
+            transform-origin: right;
+            animation: curtainOpen 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.5s forwards;
+        }
+
+        @keyframes curtainOpen {
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        /* Teddy decorations */
+        .curtain-teddies {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 8;
+        }
+
+        .curtain-teddy {
+            position: absolute;
+            font-size: 3rem;
+            animation: teddyFloat 4s ease-in-out infinite;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+        }
+
+        @keyframes teddyFloat {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(5deg);
+            }
+        }
+
+        .curtain-loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease 2.5s;
+        }
+
+        .curtain-loader.hidden {
+            pointer-events: none;
+        }
+
+        .curtain-loader.hidden .curtain-left {
+            transform: translateX(-100%);
+        }
+
+        .curtain-loader.hidden .curtain-right {
+            transform: translateX(100%);
+        }
+
+        .curtain-loader.hidden .curtain-teddies,
+        .curtain-loader.hidden .curtain-rod,
+        .curtain-loader.hidden .loader-content {
+            opacity: 0;
+        }
+
+        .curtain-loader.hidden .loader-content {
+            opacity: 0;
+        }
+
+        .loader-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
+            transition: opacity 0.8s ease-out;
+        }
+
+        .loader-emoji {
+            font-size: clamp(5rem, 20vw, 8rem);
+            animation: wiggle 2s ease-in-out infinite;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .loader-text {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            color: white;
+            font-weight: 600;
+            opacity: 0;
+            animation: fadeInText 0.8s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeInText {
+            to { opacity: 1; }
+        }
+
+        /* Main content */
+        .main-content {
+            opacity: 0;
+            transition: opacity 0.8s ease-out;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* Floating cotton clouds */
+        .clouds-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 100px;
+            animation: cloudFloat 25s infinite ease-in-out;
+        }
+
+        @keyframes cloudFloat {
+            0%, 100% {
+                transform: translateX(-10%);
+            }
+            50% {
+                transform: translateX(110%);
+            }
+        }
+
+        /* Main content */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .day-badge {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .day-number {
+            font-size: 1rem;
+            color: var(--warm-brown);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .day-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 11vw, 4.5rem);
+            color: var(--deep-brown);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .teddy-emoji {
+            animation: wiggle 3s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(-5deg);
+            }
+            75% {
+                transform: rotate(5deg);
+            }
+        }
+
+        /* Teddy card */
+        .teddy-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 50px 40px;
+            box-shadow: 
+                0 20px 60px rgba(166, 124, 82, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+            margin: 20px 0;
+            animation: fadeInUp 1s ease-out 0.3s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .teddy-illustration {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .teddy-bear {
+            font-size: clamp(8rem, 25vw, 12rem);
+            display: inline-block;
+            filter: drop-shadow(0 10px 20px rgba(166, 124, 82, 0.2));
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .teddy-bear:hover {
+            transform: scale(1.05);
+        }
+
+        .teddy-bear.hugged {
+            animation: hug 0.8s ease-out;
+        }
+
+        @keyframes hug {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        .note-holder {
+            position: relative;
+            background: rgba(250, 218, 221, 0.3);
+            border-radius: 15px;
+            padding: 30px 25px;
+            margin: 25px 0;
+            border-left: 4px solid var(--plush-pink);
+        }
+
+        .note-text {
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            line-height: 1.8;
+            color: var(--deep-brown);
+            text-align: center;
+        }
+
+        .note-placeholder {
+            background: rgba(166, 124, 82, 0.05);
+            border-left: 3px solid var(--warm-brown);
+            padding: 20px;
+            margin: 25px 0;
+            font-style: italic;
+            color: #666;
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* Hug button */
+        .hug-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--plush-pink) 0%, #ffb6c1 100%);
+            color: var(--deep-brown);
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-decoration: none;
+            margin-top: 30px;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(250, 218, 221, 0.4);
+            border: none;
+            cursor: pointer;
+            font-family: 'Quicksand', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hug-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .hug-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .hug-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(250, 218, 221, 0.5);
+        }
+
+        .hug-button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hug-button.hugging {
+            animation: buttonHug 0.8s ease-out;
+        }
+
+        @keyframes buttonHug {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(0.95);
+            }
+        }
+
+        /* Reassurance message */
+        .reassurance {
+            background: linear-gradient(135deg, rgba(255, 252, 242, 0.9) 0%, rgba(245, 235, 224, 0.9) 100%);
+            border-radius: 20px;
+            padding: 40px 35px;
+            margin: 35px 0;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(166, 124, 82, 0.15);
+            animation: fadeIn 1.5s ease-out 1s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .reassurance p {
+            font-size: clamp(1.2rem, 4vw, 1.6rem);
+            line-height: 1.9;
+            color: var(--deep-brown);
+            margin-bottom: 20px;
+        }
+
+        .reassurance .heart {
+            font-size: 2.5rem;
+            display: block;
+            margin: 20px 0;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.1);
+            }
+        }
+
+        .continue-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--warm-brown) 0%, var(--deep-brown) 100%);
+            color: white;
+            padding: 18px 45px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            margin-top: 25px;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(166, 124, 82, 0.3);
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(166, 124, 82, 0.4);
+        }
+
+        /* Back button */
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--warm-brown);
+            color: var(--deep-brown);
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-button:hover {
+            background: var(--warm-brown);
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        /* Music controls */
+        .music-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+
+        .music-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--warm-brown) 0%, var(--deep-brown) 100%);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(166, 124, 82, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .music-toggle.playing {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @media (max-width: 480px) {
+            .teddy-card {
+                padding: 40px 25px;
+            }
+
+            .note-holder {
+                padding: 25px 20px;
+            }
+
+            .music-controls {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .music-toggle {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .back-button {
+                top: 20px;
+                left: 20px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Curtain Loader -->
+    <div class="curtain-loader" id="curtainLoader">
+        <div class="curtain-rod"></div>
+        <div class="curtain-left"></div>
+        <div class="curtain-right"></div>
+        <div class="curtain-teddies">
+            <div class="curtain-teddy" style="left: 15%; top: 20%; animation-delay: 0s;">🧸</div>
+            <div class="curtain-teddy" style="left: 25%; top: 40%; animation-delay: 0.5s;">🧸</div>
+            <div class="curtain-teddy" style="left: 20%; top: 60%; animation-delay: 1s;">🧸</div>
+            <div class="curtain-teddy" style="left: 18%; top: 75%; animation-delay: 1.5s;">🧸</div>
+            <div class="curtain-teddy" style="left: 12%; top: 85%; animation-delay: 2s;">🧸</div>
+            <div class="curtain-teddy" style="right: 15%; top: 25%; animation-delay: 0.3s;">🧸</div>
+            <div class="curtain-teddy" style="right: 25%; top: 45%; animation-delay: 0.8s;">🧸</div>
+            <div class="curtain-teddy" style="right: 20%; top: 65%; animation-delay: 1.3s;">🧸</div>
+            <div class="curtain-teddy" style="right: 18%; top: 78%; animation-delay: 1.8s;">🧸</div>
+            <div class="curtain-teddy" style="right: 12%; top: 88%; animation-delay: 2.3s;">🧸</div>
+        </div>
+        <div class="loader-content">
+            <span class="loader-emoji">🧸</span>
+            <div class="loader-text">Bringing you cozy cuddles...</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+    <!-- Floating clouds -->
+    <div class="clouds-container">
+        <div class="cloud" style="top: 10%; left: -20%; width: 150px; height: 60px; animation-delay: 0s;"></div>
+        <div class="cloud" style="top: 30%; left: -20%; width: 200px; height: 80px; animation-delay: 8s;"></div>
+        <div class="cloud" style="top: 60%; left: -20%; width: 180px; height: 70px; animation-delay: 16s;"></div>
+    </div>
+
+    <!-- Main content -->
+    <div class="container">
+        <a href="index.html" class="back-button">← Back to Calendar</a>
+
+        <div class="day-badge">
+            <div class="day-number">Day 4 of 8 • 10th February</div>
+            <h1 class="day-title">
+                <span class="teddy-emoji">🧸</span>
+                Teddy Day
+            </h1>
+        </div>
+
+        <div class="teddy-card">
+            <div class="teddy-illustration">
+                <!-- CSS Art Teddy Holding Paper -->
+                <div class="teddy-holder">
+                    <div class="paper-sign">
+                        <div class="paper-content">
+                            A HUG<br>for YOU<br>
+                            <span style="font-size: 0.8em;">(and a cookie!)</span><br>
+                            <span style="font-size: 0.7em; font-style: italic;">- Love,<br>Teddy</span>
+                        </div>
+                    </div>
+                    
+                    <div class="teddy-bear-css">
+                        <!-- Head -->
+                        <div class="teddy-head">
+                            <!-- Left ear -->
+                            <div class="teddy-ear left-ear"></div>
+                            <!-- Right ear -->
+                            <div class="teddy-ear right-ear"></div>
+                            <!-- Face -->
+                            <div class="teddy-face">
+                                <div class="teddy-eye left-eye"></div>
+                                <div class="teddy-eye right-eye"></div>
+                                <div class="teddy-nose"></div>
+                                <div class="teddy-mouth"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Body -->
+                        <div class="teddy-body">
+                            <div class="teddy-belly"></div>
+                            <!-- Left arm -->
+                            <div class="teddy-arm left-arm"></div>
+                            <!-- Right arm (holding the paper) -->
+                            <div class="teddy-arm right-arm"></div>
+                            <!-- Left leg -->
+                            <div class="teddy-leg left-leg">
+                                <div class="teddy-foot"></div>
+                            </div>
+                            <!-- Right leg -->
+                            <div class="teddy-leg right-leg">
+                                <div class="teddy-foot"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cookie">🍪</div>
+                </div>
+            </div>
+
+            <div class="note-holder">
+                <p class="note-text">
+                    "Just like this teddy bear,<br>
+                    I want to be your comfort on difficult days,<br>
+                    your warmth on cold nights,<br>
+                    and your constant companion always."
+                </p>
+            </div>
+
+            <div class="note-placeholder">
+                [YOUR PERSONAL MESSAGE GOES HERE]
+                <br><br>
+                Add a sweet, reassuring message for Tory. Let her know she's safe, loved, and cherished. Make her feel like she's getting the warmest hug ever. 🤗
+            </div>
+
+            <div style="text-align: center;">
+                <button class="hug-button" id="hugButton">
+                    <span>Hug Me 🤗</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="reassurance">
+            <span class="heart">💕</span>
+            <p>
+                Whenever you feel lonely or need comfort,<br>
+                remember that you always have me.
+            </p>
+            <p>
+                I may not be a teddy bear, but I promise to be<br>
+                your safe place, your peaceful home,<br>
+                and the arms you can always run to.
+            </p>
+            <p style="font-size: 1.8rem; color: var(--warm-brown); margin-top: 30px;">
+                My dearest Tory,<br>
+                You're my lokkhi meye, forever and always. 🧸💖
+            </p>
+
+            <a href="day5.html" class="continue-btn">Continue to Tomorrow →</a>
+        </div>
+    </div>
+
+    <!-- Music controls -->
+    <div class="music-controls">
+        <button class="music-toggle" id="musicToggle" onclick="toggleMusic()">
+            🔇
+        </button>
+    </div>
+    </div>
+
+    <!-- Hidden audio element -->
+    <audio id="bgMusic" loop>
+        <source src="music/romantic-instrumental.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Mark day as visited (Feb 10 = day 10)
+        localStorage.setItem('day10Visited', 'true');
+        
+        // Curtain Loader
+        window.addEventListener('load', () => {
+            const curtainLoader = document.getElementById('curtainLoader');
+            const mainContent = document.getElementById('mainContent');
+            
+            // After loader shows, start curtain reveal
+            setTimeout(() => {
+                curtainLoader.classList.add('hidden');
+                mainContent.classList.add('visible');
+                
+                // After curtain animation completes (2s transition + 0.5s buffer), completely remove it
+                setTimeout(() => {
+                    curtainLoader.classList.add('completely-hidden');
+                }, 2500);
+            }, 2500); // Show loader animation first
+        });
+        
+        // Hug button interaction
+        const hugButton = document.getElementById('hugButton');
+        const teddyBear = document.getElementById('teddyBear');
+
+        hugButton.addEventListener('click', function() {
+            // Add hug animation
+            teddyBear.classList.add('hugged');
+            hugButton.classList.add('hugging');
+            
+            // Vibrate if supported
+            if ('vibrate' in navigator) {
+                navigator.vibrate([100, 50, 100, 50, 100]);
+            }
+            
+            // Create floating hearts
+            createFloatingHearts();
+            
+            // Remove animation class after it completes
+            setTimeout(() => {
+                teddyBear.classList.remove('hugged');
+                hugButton.classList.remove('hugging');
+            }, 800);
+        });
+
+        function createFloatingHearts() {
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '💕';
+                heart.style.position = 'fixed';
+                heart.style.left = (Math.random() * 80 + 10) + '%';
+                heart.style.top = '60%';
+                heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                heart.style.opacity = '0';
+                heart.style.zIndex = '9999';
+                heart.style.pointerEvents = 'none';
+                heart.style.animation = `floatHeart ${Math.random() * 2 + 2}s ease-out forwards`;
+                heart.style.animationDelay = (i * 0.1) + 's';
+                
+                document.body.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 4000);
+            }
+        }
+
+        // Add float heart animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes floatHeart {
+                0% {
+                    opacity: 0;
+                    transform: translateY(0) scale(0.5);
+                }
+                20% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateY(-150px) scale(1);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Music control
+        const music = document.getElementById('bgMusic');
+        const toggle = document.getElementById('musicToggle');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                toggle.textContent = '🔇';
+                toggle.classList.remove('playing');
+            } else {
+                music.play();
+                music.volume = 0.15;
+                toggle.textContent = '🔊';
+                toggle.classList.add('playing');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Fix continue button - prevent navigation to locked days
+        const continueBtn = document.querySelector('a[href="day5.html"]');
+        if (continueBtn) {
+            continueBtn.addEventListener('click', function(e) {
+                const nextDayDate = new Date(2026, 1, 11); // Feb 11
+                const debugDate = localStorage.getItem('debugDate');
+                const currentDate = debugDate ? new Date(debugDate) : new Date();
+                const debugUnlock = localStorage.getItem('debugUnlockAll') === 'true';
+                
+                if (currentDate < nextDayDate && !debugUnlock) {
+                    e.preventDefault();
+                    alert('Day 5 unlocks on February 11, 2026. Patience, lokkhi! 💕');
+                }
+            });
+        }
+
+        // ========================================
+        // THEME TOGGLE & NIGHT MODE
+        // ========================================
+        // Sewing Easter Egg
+        function triggerSewingEasterEgg() {
+            const sewMsg = document.createElement('div');
+            sewMsg.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #d2b48c 0%, #deb887 100%);
+                color: #5c4033;
+                padding: 30px 40px;
+                border-radius: 20px;
+                font-size: 1.5rem;
+                z-index: 10000;
+                box-shadow: 0 10px 40px rgba(210, 180, 140, 0.6);
+                animation: scaleIn 0.5s ease-out;
+                text-align: center;
+                font-family: 'Playfair Display', serif;
+            `;
+            sewMsg.innerHTML = '🧸 Stitched with love, just for you! 🧵<br><small style="font-size: 0.9rem; margin-top: 10px; display: block;">Every thread woven with care! 💕</small>';
+            document.body.appendChild(sewMsg);
+            
+            createConfetti();
+            
+            setTimeout(() => sewMsg.remove(), 3000);
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('night-mode');
+            const themeToggle = document.getElementById('themeToggle');
+            const isNight = document.body.classList.contains('night-mode');
+            themeToggle.textContent = isNight ? '🌙' : '☀️';
+            localStorage.setItem('theme', isNight ? 'night' : 'day');
+            if (isNight) createStars();
+        }
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'night') {
+            document.body.classList.add('night-mode');
+            document.getElementById('themeToggle').textContent = '🌙';
+            createStars();
+        }
+
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            if (!starsContainer) return;
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // ========================================
+        // EASTER EGG
+        // ========================================
+        function triggerEasterEgg() {
+            const emojis = ['🧸', '🧵', '🪡', '❤️', '💕'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.style.position = 'fixed';
+                    emoji.style.left = Math.random() * 100 + 'vw';
+                    emoji.style.top = '-50px';
+                    emoji.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                    emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.zIndex = '99999';
+                    emoji.style.pointerEvents = 'none';
+                    emoji.style.animation = `confettiFall ${Math.random() * 3 + 2}s ease-out forwards`;
+                    document.body.appendChild(emoji);
+                    setTimeout(() => emoji.remove(), 5000);
+                }, i * 30);
+            }
+
+            const msg = document.createElement('div');
+            msg.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, var(--rose), var(--deep-rose));
+                color: white;
+                padding: 30px 40px;
+                border-radius: 20px;
+                font-size: 1.5rem;
+                text-align: center;
+                z-index: 100000;
+                box-shadow: 0 20px 60px rgba(255, 107, 157, 0.5);
+                animation: scaleIn 0.5s ease-out;
+            `;
+            msg.innerHTML = '🧸 Made with love, stitched with care, this teddy is for you! 💕';
+            document.body.appendChild(msg);
+            setTimeout(() => {
+                msg.style.animation = 'fadeOut 0.5s ease-out';
+                setTimeout(() => msg.remove(), 500);
+            }, 3000);
+        }
+
+        const confettiStyle = document.createElement('style');
+        confettiStyle.innerHTML = `
+            @keyframes confettiFall {
+                to {
+                    transform: translateY(100vh) rotate(720deg);
+                    opacity: 0;
+                }
+            }
+            @keyframes fadeOut {
+                to {
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(0.8);
+                }
+            }
+        `;
+        document.head.appendChild(confettiStyle);
+
+        // ========================================
+        // FIX CONTINUE TOMORROW BUTTON
+        // ========================================
+        const continueBtn = document.querySelector('a[href="day5.html"]');
+        if (continueBtn) {
+            const nextDayDate = new Date(2026, 1, 11);
+            const debugDate = localStorage.getItem('debugDate');
+            const currentDate = debugDate ? new Date(debugDate + 'T00:00:00') : new Date();
+            const debugUnlock = localStorage.getItem('debugUnlockAll') === 'true';
+            
+            if (currentDate < nextDayDate && !debugUnlock) {
+                continueBtn.style.display = 'none';
+            }
+        }
+    </script>
+
+    <!-- Sewing Easter Egg -->
+    <div class="sewing-easter-egg" onclick="triggerSewingEasterEgg()" title="Click the seamstress!">
+        👧🧵
+    </div>
+
+    <!-- Stars for night mode -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle" title="Toggle Day/Night Mode">
+        ☀️
+    </button>
+
+    <!-- Easter Egg -->
+    <div class="easter-egg-trigger" onclick="triggerEasterEgg()" title="Click to see the teddy being made!">
+        🧵🧸
+    </div>
+
+</body>
+</html>
