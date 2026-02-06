@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 5 - Promise Day 🤝</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-maroon: #800020;
+            --midnight-blue: #191970;
+            --royal-purple: #4b0082;
+            --gold-accent: #d4af37;
+            --soft-cream: #faf8f3;
+        }
+
+
+        /* Night mode styles */
+        body.night-mode {
+            --rose: #ff4d94;
+            --deep-rose: #ff1a75;
+            background: linear-gradient(135deg, #0a0a1f 0%, #1a1a3e 50%, #2d1b4e 100%) !important;
+        }
+
+        body.night-mode .content-card {
+            background: rgba(26, 26, 62, 0.95);
+            box-shadow: 0 20px 60px rgba(255, 77, 148, 0.3);
+        }
+
+        body.night-mode h1, body.night-mode .day-title, body.night-mode .message p {
+            color: #ffd700 !important;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        body.night-mode .quote {
+            color: #ff94c7 !important;
+            border-left-color: #ff4d94;
+            background: rgba(255, 77, 148, 0.1);
+        }
+
+        body.night-mode .stars {
+            display: block;
+        }
+
+        .stars {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 1s ease-out 3.8s both;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(20deg);
+        }
+
+        body.night-mode .theme-toggle {
+            background: rgba(26, 26, 62, 0.9);
+        }
+
+        /* Easter Egg */
+        .easter-egg-trigger {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            font-size: 3rem;
+            cursor: pointer;
+            z-index: 101;
+            animation: easterEggFloat 3s ease-in-out infinite, fadeIn 1s ease-out 4.5s both;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+        }
+
+        @keyframes easterEggFloat {
+            0%, 100% { transform: translateY(0px) rotate(-5deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .easter-egg-trigger:hover {
+            animation: easterEggFloat 0.5s ease-in-out infinite, bounceScale 0.6s ease-in-out;
+        }
+
+        @keyframes bounceScale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        
+        /* Custom Cursor */
+        body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="24" font-size="24">🔒</text></svg>') 16 16, auto;
+        }
+
+        a, button, .cta-button, .music-toggle, .theme-toggle, [onclick] {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><text y="30" font-size="30">🔒</text></svg>') 20 20, pointer;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, #1a0f2e 0%, #2d1b4e 50%, #4a2866 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Curtain Loader */
+        .curtain-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            overflow: hidden;
+        }
+
+        /* Curtain Rod */
+        .curtain-rod {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: linear-gradient(180deg, #4A4A4A 0%, #2C2C2C 100%);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            z-index: 15;
+        }
+
+        .curtain-rod::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: radial-gradient(ellipse, #FFD700 0%, #B8860B 100%);
+            transform: translateY(-50%);
+            box-shadow: 0 2px 10px rgba(255, 215, 0, 0.6);
+        }
+
+        .curtain-left, .curtain-right {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #800020 0%, #191970 100%);
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.4);
+            z-index: 5;
+            background-image: 
+                repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(0,0,0,0.1) 40px, rgba(0,0,0,0.1) 80px);
+        }
+
+        .curtain-left {
+            left: 0;
+            transform-origin: left;
+            transition: transform 2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            
+        }
+
+        .curtain-right {
+            right: 0;
+            transform-origin: right;
+            transition: transform 2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            
+        }
+
+
+        /* Lock decorations */
+        .curtain-locks {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 8;
+        }
+
+        .curtain-lock {
+            position: absolute;
+            font-size: 3rem;
+            animation: lockFloat 4s ease-in-out infinite;
+            filter: drop-shadow(0 5px 10px rgba(255, 215, 0, 0.5));
+        }
+
+        @keyframes lockFloat {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(5deg);
+            }
+        }
+
+        .curtain-loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease 2.5s;
+        }
+
+        .curtain-loader.hidden .curtain-left {
+            transform: translateX(-100%);
+        }
+
+        .curtain-loader.hidden .curtain-right {
+            transform: translateX(100%);
+        }
+
+        .curtain-loader.hidden .curtain-locks,
+        .curtain-loader.hidden .curtain-rod,
+        .curtain-loader.hidden .loader-content {
+            opacity: 0;
+        }
+
+        .curtain-loader.hidden .loader-content {
+            opacity: 0;
+        }
+
+        .loader-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
+            transition: opacity 0.8s ease-out;
+        }
+
+        .loader-emoji {
+            font-size: clamp(5rem, 20vw, 8rem);
+            animation: lockGlow 2s ease-in-out infinite;
+            display: block;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.8));
+        }
+
+        @keyframes lockGlow {
+            0%, 100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.6));
+            }
+            50% {
+                transform: scale(1.05);
+                filter: drop-shadow(0 0 30px rgba(212, 175, 55, 1));
+            }
+        }
+
+        .loader-text {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            color: #ffd700;
+            font-weight: 600;
+            opacity: 0;
+            animation: fadeInText 0.8s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeInText {
+            to { opacity: 1; }
+        }
+
+        /* Main content */
+        .main-content {
+            opacity: 0;
+            transition: opacity 0.8s ease-out;
+        }
+
+        .main-content.visible {
+            opacity: 1;
+        }
+
+        /* Starry background */
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 3px white;
+            animation: starTwinkle 3s infinite;
+        }
+
+        @keyframes starTwinkle {
+            0%, 100% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Main content */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .day-badge {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .day-number {
+            font-size: 1rem;
+            color: var(--gold-accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .special-badge {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #8b4513;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+            }
+            50% {
+                box-shadow: 0 5px 25px rgba(255, 215, 0, 0.7);
+            }
+        }
+
+        .day-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 11vw, 4.5rem);
+            color: white;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .promise-emoji {
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.6));
+            }
+            50% {
+                filter: drop-shadow(0 0 15px rgba(212, 175, 55, 1));
+            }
+        }
+
+        /* Sacred scroll */
+        .sacred-scroll {
+            background: rgba(250, 248, 243, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 50px 40px;
+            box-shadow: 
+                0 25px 70px rgba(212, 175, 55, 0.3),
+                0 0 0 2px var(--gold-accent) inset;
+            margin: 30px 0;
+            animation: slideInUp 1s ease-out 0.3s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sacred-scroll::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(212, 175, 55, 0.05) 2px,
+                    rgba(212, 175, 55, 0.05) 4px
+                );
+            pointer-events: none;
+        }
+
+        .scroll-header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .lock-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            display: block;
+            filter: drop-shadow(0 5px 15px rgba(212, 175, 55, 0.4));
+            animation: lockPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes lockPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .scroll-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 7vw, 3rem);
+            color: var(--deep-maroon);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .scroll-subtitle {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.1rem;
+            color: var(--royal-purple);
+            font-style: italic;
+        }
+
+        .promises-list {
+            position: relative;
+            z-index: 1;
+            margin: 35px 0;
+        }
+
+        .promise-item {
+            background: rgba(128, 0, 32, 0.03);
+            border-left: 4px solid var(--deep-maroon);
+            padding: 25px 20px;
+            margin-bottom: 25px;
+            border-radius: 0 15px 15px 0;
+            animation: fadeInRight 0.8s ease-out both;
+        }
+
+        .promise-item:nth-child(1) { animation-delay: 0.8s; }
+        .promise-item:nth-child(2) { animation-delay: 1s; }
+        .promise-item:nth-child(3) { animation-delay: 1.2s; }
+        .promise-item:nth-child(4) { animation-delay: 1.4s; }
+        .promise-item:nth-child(5) { animation-delay: 1.6s; }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .promise-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--deep-maroon);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .promise-text {
+            font-size: clamp(1.1rem, 4vw, 1.4rem);
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .promise-placeholder {
+            background: rgba(128, 0, 32, 0.05);
+            border-left: 3px solid var(--royal-purple);
+            padding: 20px;
+            margin: 30px 0;
+            font-style: italic;
+            color: #666;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .signature-section {
+            position: relative;
+            z-index: 1;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid rgba(212, 175, 55, 0.3);
+            text-align: right;
+        }
+
+        .signature {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 6vw, 2.8rem);
+            color: var(--deep-maroon);
+            font-style: italic;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .signature-date {
+            font-size: 1.1rem;
+            color: var(--royal-purple);
+            font-style: italic;
+        }
+
+        /* Special day message */
+        .special-message {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(212, 175, 55, 0.1) 100%);
+            border: 2px solid var(--gold-accent);
+            border-radius: 20px;
+            padding: 35px 30px;
+            margin: 35px 0;
+            text-align: center;
+            animation: fadeIn 1.8s ease-out 1.8s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .special-message p {
+            font-size: clamp(1.2rem, 4vw, 1.6rem);
+            line-height: 1.9;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .special-message .highlight {
+            color: var(--gold-accent);
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        .continue-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--deep-maroon) 0%, var(--midnight-blue) 100%);
+            color: white;
+            padding: 18px 45px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 25px;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(128, 0, 32, 0.4);
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(128, 0, 32, 0.5);
+        }
+
+        /* Back button */
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(250, 248, 243, 0.95);
+            border: 2px solid var(--gold-accent);
+            color: var(--deep-maroon);
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-button:hover {
+            background: var(--gold-accent);
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        /* Music controls */
+        .music-controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+        }
+
+        .music-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--deep-maroon) 0%, var(--midnight-blue) 100%);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(128, 0, 32, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .music-toggle.playing {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @media (max-width: 480px) {
+            .sacred-scroll {
+                padding: 40px 25px;
+            }
+
+            .promise-item {
+                padding: 20px 15px;
+            }
+
+            .music-controls {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .music-toggle {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .back-button {
+                top: 20px;
+                left: 20px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    
+        /* Locksmith Easter Egg */
+        .locksmith-easter-egg {
+            position: fixed;
+            bottom: 80px;
+            left: 30px;
+            font-size: 2.5rem;
+            cursor: pointer;
+            z-index: 200;
+            animation: easterEggFloat 2s ease-in-out infinite, fadeIn 1s ease-out 4s both;
+            transition: transform 0.3s ease;
+        }
+
+        @keyframes easterEggFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.1); }
+        }
+
+        .locksmith-easter-egg:hover {
+            transform: scale(1.3) !important;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Curtain Loader -->
+    <div class="curtain-loader" id="curtainLoader">
+        <div class="curtain-rod"></div>
+        <div class="curtain-left"></div>
+        <div class="curtain-right"></div>
+        <div class="curtain-locks">
+            <div class="curtain-lock" style="left: 15%; top: 20%; animation-delay: 0s;">🔒</div>
+            <div class="curtain-lock" style="left: 25%; top: 40%; animation-delay: 0.5s;">🔒</div>
+            <div class="curtain-lock" style="left: 20%; top: 60%; animation-delay: 1s;">🔒</div>
+            <div class="curtain-lock" style="left: 18%; top: 75%; animation-delay: 1.5s;">🔒</div>
+            <div class="curtain-lock" style="left: 12%; top: 85%; animation-delay: 2s;">🔒</div>
+            <div class="curtain-lock" style="right: 15%; top: 25%; animation-delay: 0.3s;">🔒</div>
+            <div class="curtain-lock" style="right: 25%; top: 45%; animation-delay: 0.8s;">🔒</div>
+            <div class="curtain-lock" style="right: 20%; top: 65%; animation-delay: 1.3s;">🔒</div>
+            <div class="curtain-lock" style="right: 18%; top: 78%; animation-delay: 1.8s;">🔒</div>
+            <div class="curtain-lock" style="right: 12%; top: 88%; animation-delay: 2.3s;">🔒</div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+    <!-- Stars background -->
+    <div class="stars-container" id="starsContainer"></div>
+
+    <!-- Main content -->
+    <div class="container">
+        <a href="index.html" class="back-button">← Back to Calendar</a>
+
+        <div class="day-badge">
+            <div class="special-badge">✨ THE DAY WE MET ✨</div>
+            <div class="day-number">Day 5 of 8 • 11th February</div>
+            <h1 class="day-title">
+                <span class="promise-emoji">🤝</span>
+                Promise Day
+            </h1>
+        </div>
+
+        <div class="sacred-scroll">
+            <div class="scroll-header">
+                <span class="lock-icon">🔒</span>
+                <h2 class="scroll-title">My Promises</h2>
+                <p class="scroll-subtitle">To my dearest Tory, on this special day</p>
+            </div>
+
+            <div class="promises-list">
+                <div class="promise-placeholder">
+                    [YOUR 3-5 PROMISES GO HERE]
+                    <br><br>
+                    Write your heartfelt promises to Tory. Make them meaningful, specific, and from the heart. These are sacred vows that show your commitment and love.
+                    <br><br>
+                    Examples:
+                    <br>• I promise to always be your safe place...
+                    <br>• I promise to cherish every moment we share...
+                    <br>• I promise to stand by you through...
+                </div>
+
+                <div class="promise-item">
+                    <div class="promise-number">Promise One</div>
+                    <p class="promise-text">
+                        Your first promise goes here...
+                    </p>
+                </div>
+            </div>
+
+            <div class="signature-section">
+                <div class="signature">Yash</div>
+                <div class="signature-date">February 11, 2026</div>
+            </div>
+        </div>
+
+        <div class="special-message">
+            <p>
+                Today is extra special because <span class="highlight">it's the day we met</span>.
+            </p>
+            <p>
+                That moment changed my life forever,<br>
+                and every day since has been a blessing.
+            </p>
+            <p>
+                These promises are sealed with all my love,<br>
+                just like my heart was sealed the day I met you.
+            </p>
+            <p style="font-size: 1.9rem; margin-top: 30px;">
+                Forever your Yash,<br>
+                To my amar lokkhi meye 💫
+            </p>
+
+            <a href="day6.html" class="continue-btn">Continue to Tomorrow →</a>
+        </div>
+    </div>
+
+    <!-- Music controls -->
+    <div class="music-controls">
+        <button class="music-toggle" id="musicToggle" onclick="toggleMusic()">
+            🔇
+        </button>
+    </div>
+    </div>
+
+    <!-- Hidden audio element -->
+    <audio id="bgMusic" loop>
+        <source src="music/romantic-instrumental.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Mark day as visited (Feb 11 = day 11)
+        localStorage.setItem('day11Visited', 'true');
+        
+                // Curtain animation
+        window.addEventListener('load', () => {
+            const curtainLoader = document.getElementById('curtainLoader');
+            const mainContent = document.getElementById('mainContent');
+            
+            // Open curtains after 1 second
+            setTimeout(() => {
+                if (curtainLoader) curtainLoader.classList.add('hidden');
+                if (mainContent) mainContent.classList.add('visible');
+                
+                // Completely remove curtain after animation
+                setTimeout(() => {
+                    if (curtainLoader) curtainLoader.style.display = 'none';
+                }, 2500);
+            }, 1000);
+        });
+        
+        // Create stars
+        function createStar() {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            
+            document.getElementById('starsContainer').appendChild(star);
+        }
+
+        for (let i = 0; i < 100; i++) {
+            createStar();
+        }
+
+        // Music control
+        const music = document.getElementById('bgMusic');
+        const toggle = document.getElementById('musicToggle');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                toggle.textContent = '🔇';
+                toggle.classList.remove('playing');
+            } else {
+                music.play();
+                music.volume = 0.15;
+                toggle.textContent = '🔊';
+                toggle.classList.add('playing');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Fix continue button - prevent navigation to locked days
+        const continueBtn = document.querySelector('a[href="day6.html"]');
+        if (continueBtn) {
+            continueBtn.addEventListener('click', function(e) {
+                const nextDayDate = new Date(2026, 1, 12); // Feb 12
+                const debugDate = localStorage.getItem('debugDate');
+                const currentDate = debugDate ? new Date(debugDate) : new Date();
+                const debugUnlock = localStorage.getItem('debugUnlockAll') === 'true';
+                
+                if (currentDate < nextDayDate && !debugUnlock) {
+                    e.preventDefault();
+                    alert('Day 6 unlocks on February 12, 2026. Patience, lokkhi! 💕');
+                }
+            });
+        }
+
+        // ========================================
+        // THEME TOGGLE & NIGHT MODE
+        // ========================================
+        function toggleTheme() {
+            document.body.classList.toggle('night-mode');
+            const themeToggle = document.getElementById('themeToggle');
+            const isNight = document.body.classList.contains('night-mode');
+            themeToggle.textContent = isNight ? '🌙' : '☀️';
+            localStorage.setItem('theme', isNight ? 'night' : 'day');
+            if (isNight) createStars();
+        }
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'night') {
+            document.body.classList.add('night-mode');
+            document.getElementById('themeToggle').textContent = '🌙';
+            createStars();
+        }
+
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            if (!starsContainer) return;
+            starsContainer.innerHTML = '';
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // ========================================
+        // EASTER EGG
+        // ========================================
+        function triggerEasterEgg() {
+            const emojis = ['🔐', '🔑', '💖', '🤝', '✨'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.style.position = 'fixed';
+                    emoji.style.left = Math.random() * 100 + 'vw';
+                    emoji.style.top = '-50px';
+                    emoji.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                    emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.zIndex = '99999';
+                    emoji.style.pointerEvents = 'none';
+                    emoji.style.animation = `confettiFall ${Math.random() * 3 + 2}s ease-out forwards`;
+                    document.body.appendChild(emoji);
+                    setTimeout(() => emoji.remove(), 5000);
+                }, i * 30);
+            }
+
+            const msg = document.createElement('div');
+            msg.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, var(--rose), var(--deep-rose));
+                color: white;
+                padding: 30px 40px;
+                border-radius: 20px;
+                font-size: 1.5rem;
+                text-align: center;
+                z-index: 100000;
+                box-shadow: 0 20px 60px rgba(255, 107, 157, 0.5);
+                animation: scaleIn 0.5s ease-out;
+            `;
+            msg.innerHTML = '🔐 Unlocking my heart, forever yours with this promise! 💕';
+            document.body.appendChild(msg);
+            setTimeout(() => {
+                msg.style.animation = 'fadeOut 0.5s ease-out';
+                setTimeout(() => msg.remove(), 500);
+            }, 3000);
+        }
+
+        const confettiStyle = document.createElement('style');
+        confettiStyle.innerHTML = `
+            @keyframes confettiFall {
+                to {
+                    transform: translateY(100vh) rotate(720deg);
+                    opacity: 0;
+                }
+            }
+            @keyframes fadeOut {
+                to {
+                    opacity: 0;
+                    transform: translate(-50%, -50%) scale(0.8);
+                }
+            }
+        `;
+        document.head.appendChild(confettiStyle);
+
+        // ========================================
+        
+    
+        // ========================================
+        // CONFETTI FUNCTION
+        // ========================================
+        function createConfetti() {
+            const colors = ['#ff6b9d', '#ffd700', '#ff1493', '#00ffff', '#ff69b4', '#ffb6c1'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.cssText = `
+                    position: fixed;
+                    width: 10px;
+                    height: 10px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    left: ${Math.random() * 100}vw;
+                    top: -10px;
+                    opacity: 1;
+                    transform: rotate(${Math.random() * 360}deg);
+                    animation: confettiFall ${2 + Math.random() * 3}s linear forwards;
+                    pointer-events: none;
+                    z-index: 99999;
+                `;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000);
+            }
+        }
+
+    
+        // Locksmith Easter Egg Function
+        function triggerLocksmithEasterEgg() {
+            const eggMsg = document.createElement('div');
+            eggMsg.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
+                color: white;
+                padding: 30px 40px;
+                border-radius: 20px;
+                font-size: 1.5rem;
+                z-index: 100000;
+                box-shadow: 0 10px 40px rgba(255, 20, 147, 0.6);
+                animation: scaleIn 0.5s ease-out;
+                text-align: center;
+                font-family: 'Playfair Display', serif;
+            `;
+            eggMsg.innerHTML = '🔐 Our love is locked and sealed forever! 🔑';
+            document.body.appendChild(eggMsg);
+            
+            // Create confetti
+            if (typeof createConfetti === 'function') {
+                createConfetti();
+            }
+            
+            // Auto-remove after 3 seconds
+            setTimeout(() => eggMsg.remove(), 3000);
+        }
+
+    </script>
+
+    <!-- Stars for night mode -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle" title="Toggle Day/Night Mode">
+        ☀️
+    </button>
+
+    <!-- Easter Egg -->
+    <div class="easter-egg-trigger" onclick="triggerEasterEgg()" title="Click the locksmith!">
+        🔐🔑
+    </div>
+
+
+    <!-- Locksmith Easter Egg -->
+    <div class="locksmith-easter-egg" onclick="triggerLocksmithEasterEgg()" title="Click the locksmith!">
+        🔒🔑
+    </div>
+</body>
+</html>
