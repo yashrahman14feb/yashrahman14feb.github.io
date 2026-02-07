@@ -640,7 +640,16 @@
         .hug-easter-egg:hover {
             transform: scale(1.3) !important;
         }
-
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
     </style>
 </head>
 <body>
@@ -651,14 +660,14 @@
         <div class="curtain-right"></div>
         <div class="curtain-hugs">
             <div class="curtain-hug" style="left: 15%; top: 20%; animation-delay: 0s;">🤗</div>
-            <div class="curtain-hug" style="left: 25%; top: 40%; animation-delay: 0.5s;">🤗</div>
-            <div class="curtain-hug" style="left: 20%; top: 60%; animation-delay: 1s;">🤗</div>
-            <div class="curtain-hug" style="left: 18%; top: 75%; animation-delay: 1.5s;">🤗</div>
-            <div class="curtain-hug" style="left: 12%; top: 85%; animation-delay: 2s;">🤗</div>
-            <div class="curtain-hug" style="right: 15%; top: 25%; animation-delay: 0.3s;">🤗</div>
-            <div class="curtain-hug" style="right: 25%; top: 45%; animation-delay: 0.8s;">🤗</div>
-            <div class="curtain-hug" style="right: 20%; top: 65%; animation-delay: 1.3s;">🤗</div>
-            <div class="curtain-hug" style="right: 18%; top: 78%; animation-delay: 1.8s;">🤗</div>
+            <div class="curtain-hug" style="left: 25%; top: 40%; animation-delay: 0.5s;">🙈</div>
+            <div class="curtain-hug" style="left: 20%; top: 60%; animation-delay: 1s;">🙈</div>
+            <div class="curtain-hug" style="left: 18%; top: 75%; animation-delay: 1.5s;"></div>
+            <div class="curtain-hug" style="left: 12%; top: 85%; animation-delay: 2s;">🙈</div>
+            <div class="curtain-hug" style="right: 15%; top: 25%; animation-delay: 0.3s;">🙈</div>
+            <div class="curtain-hug" style="right: 25%; top: 45%; animation-delay: 0.8s;">🙈</div>
+            <div class="curtain-hug" style="right: 20%; top: 65%; animation-delay: 1.3s;">🙈</div>
+            <div class="curtain-hug" style="right: 18%; top: 78%; animation-delay: 1.8s;">🙈</div>
             <div class="curtain-hug" style="right: 12%; top: 88%; animation-delay: 2.3s;">🤗</div>
         </div>
         </div>
@@ -672,7 +681,7 @@
             <div class="day-badge">
                 <div class="day-number">Day 6 of 8 • 12th February</div>
                 <h1 class="day-title">
-                    <span class="hug-emoji">🤗</span>
+                    <span class="hug-emoji">🤗🙈</span>
                     Hug Day
                 </h1>
             </div>
@@ -695,7 +704,7 @@
                 </div>
 
                 <div class="placeholder">
-                    [YOUR HUG DAY MESSAGE GOES HERE]
+                    [MESSAGE GOES HERE]
                     <br><br>
                     Tell Tory about the comfort of your hugs. How they make her feel safe. How you'll always be there to hold her. Make her feel wrapped in warmth and love.
                 </div>
@@ -718,8 +727,8 @@
                     the embrace of two souls in love.
                 </p>
                 <p style="font-size: 1.9rem; color: var(--deep-orange); margin-top: 30px;">
-                    My dearest Tory,<br>
-                    You're forever in my arms, lokkhi meye. 🤗💕
+                    My dearest <span class="highlight">Tory ❤🌸,</span><br>
+                    You're forever in my arms, Shona. 🤗💕
                 </p>
 
                 <a href="day7.html" class="continue-btn" id="continueBtn">Continue to Tomorrow →</a>
@@ -899,7 +908,7 @@
                     const emoji = document.createElement('div');
                     emoji.style.position = 'fixed';
                     emoji.style.left = Math.random() * 100 + 'vw';
-                    emoji.style.top = '-50px';
+                    emoji.style.top = '50px';
                     emoji.style.fontSize = (Math.random() * 30 + 20) + 'px';
                     emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
                     emoji.style.zIndex = '99999';
@@ -1021,13 +1030,13 @@
 
     <!-- Easter Egg -->
     <div class="easter-egg-trigger" onclick="triggerEasterEgg()" title="Click for a hug!">
-        🤗💕
+        🤗🙈💕
     </div>
 
 
     <!-- Hug Easter Egg -->
     <div class="hug-easter-egg" onclick="triggerHugEasterEgg()" title="Click the hug!">
-        🤗💞
+        🥰💞
     </div>
 </body>
 </html>
